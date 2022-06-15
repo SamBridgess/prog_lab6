@@ -1,4 +1,4 @@
-package ilya.lab.client.Exceptions;
+package ilya.lab.common.Exceptions;
 
 public class WrongFileFormatException extends Exception {
 }
