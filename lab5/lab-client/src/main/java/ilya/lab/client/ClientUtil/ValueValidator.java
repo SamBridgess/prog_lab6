@@ -1,4 +1,4 @@
-package ilya.lab.server.Utility;
+package ilya.lab.client.ClientUtil;
 
 import java.math.BigDecimal;
 

@@ -1,7 +1,7 @@
 package ilya.lab.server.Сommands;
 
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.Utility.CollectionManager;
+import ilya.lab.client.IO.IOManager;
+import ilya.lab.client.Utility.CollectionManager;
 
 /**
  * clear command

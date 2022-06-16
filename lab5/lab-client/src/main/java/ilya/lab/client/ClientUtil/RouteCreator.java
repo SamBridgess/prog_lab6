@@ -1,13 +1,15 @@
-package ilya.lab.server.IO;
+package ilya.lab.client.ClientUtil;
 
 
+import ilya.lab.client.IO.FieldInputManager;
+import ilya.lab.client.IO.IOManager;
+import ilya.lab.common.Requests.ClientIdRequest;
 import ilya.lab.common.Classes.Coordinates;
 import ilya.lab.common.Classes.Location;
 import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
-import ilya.lab.server.Utility.CollectionManager;
-import ilya.lab.server.Utility.ValueValidator;
+
 
 /**
  * creates new Routes
@@ -19,17 +21,15 @@ public final class RouteCreator {
     private final long yBiggerThan = -673;
     private final float distanceBiggerThan = 1;
     private final IOManager io;
-    private final CollectionManager manager;
+
 
     /**
      * creates new RouteCreator
      *
      * @param io        passed IOManager
-     * @param manager   passed CollectionManager
      */
-    public RouteCreator(IOManager io, CollectionManager manager) {
+    public RouteCreator(IOManager io) {
         this.io = io;
-        this.manager = manager;
     }
 
     /**
@@ -67,7 +67,7 @@ public final class RouteCreator {
 
         float distance = inputManager.validatedLoopInput("Enter distance: ", io, Float.class, new ValueValidator(new Number[]{}, distanceBiggerThan, noMax, false));
 
-        return new Route(manager.assignNewId(), name, coordinates, from, to, distance);
+        return new Route(new ClientIdRequest().requestId(), name, coordinates, from, to, distance);
     }
 
 }

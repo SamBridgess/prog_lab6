@@ -1,4 +1,4 @@
-package ilya.lab.server.IO;
+package ilya.lab.client.IO;
 
 import ilya.lab.common.Exceptions.CtrlDException;
 

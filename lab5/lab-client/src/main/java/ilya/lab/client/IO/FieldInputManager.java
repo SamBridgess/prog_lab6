@@ -1,10 +1,10 @@
-package ilya.lab.server.IO;
+package ilya.lab.client.IO;
 
 
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.InvalidValueException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
-import ilya.lab.server.Utility.ValueValidator;
+import ilya.lab.client.ClientUtil.ValueValidator;
 
 import java.io.IOException;
 import java.util.Objects;
