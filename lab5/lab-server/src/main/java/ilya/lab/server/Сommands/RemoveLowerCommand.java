@@ -1,10 +1,10 @@
 package ilya.lab.server.Сommands;
 
+import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.IO.RouteCreator;
-import ilya.lab.server.Utility.CollectionManager;
+import ilya.lab.common.Requests.ServerResponse;
+import ilya.lab.server.ServerUtil.CollectionManager;
 
 
 /**
@@ -12,8 +12,7 @@ import ilya.lab.server.Utility.CollectionManager;
  */
 public class RemoveLowerCommand extends Command {
     private final CollectionManager manager;
-    public RemoveLowerCommand(IOManager io, CollectionManager manager) {
-        super(0, io);
+    public RemoveLowerCommand(CollectionManager manager) {
         this.manager = manager;
     }
 
@@ -21,12 +20,14 @@ public class RemoveLowerCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      * @throws WrongFileFormatException
      * @throws CtrlDException
      */
     @Override
-    public void execute(String[] args) throws WrongFileFormatException, CtrlDException {
-        manager.removeAllLower(new RouteCreator(getIOManager(), manager).createRoute());
-        getIOManager().printConfirmation("Elements removed successfully");
+    public ServerResponse execute(String[] args, Route route) throws WrongFileFormatException, CtrlDException {
+        manager.removeAllLower(route);
+
+        return new ServerResponse("Elements removed successfully");
     }
 }

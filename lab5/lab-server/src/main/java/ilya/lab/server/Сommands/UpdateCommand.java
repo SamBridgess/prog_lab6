@@ -4,9 +4,7 @@ package ilya.lab.server.Сommands;
 import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.IO.RouteCreator;
-import ilya.lab.server.Utility.CollectionManager;
+import ilya.lab.server.ServerUtil.CollectionManager;
 
 
 /**
@@ -14,8 +12,7 @@ import ilya.lab.server.Utility.CollectionManager;
  */
 public class UpdateCommand extends Command {
     private final CollectionManager manager;
-    public UpdateCommand(IOManager io, CollectionManager manager) {
-        super(1, io);
+    public UpdateCommand(CollectionManager manager) {
         this.manager = manager;
     }
 
@@ -23,14 +20,14 @@ public class UpdateCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      * @throws WrongFileFormatException
      * @throws CtrlDException
      */
     @Override
-    public void execute(String[] args) throws WrongFileFormatException, CtrlDException {
+    public void execute(String[] args, Route route) throws WrongFileFormatException, CtrlDException {
         try {
             if (manager.isElementIdPresent(Long.valueOf(args[0]))) {
-                Route route = new RouteCreator(getIOManager(), manager).createRoute();
                 manager.updateRouteByID(Long.valueOf(args[0]), route);
                 getIOManager().printConfirmation("Updated element successfully");
             } else {

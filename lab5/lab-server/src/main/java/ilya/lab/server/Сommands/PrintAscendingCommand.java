@@ -1,8 +1,8 @@
 package ilya.lab.server.Сommands;
 
 import ilya.lab.common.Classes.Route;
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.Utility.CollectionManager;
+import ilya.lab.common.Requests.ServerResponse;
+import ilya.lab.server.ServerUtil.CollectionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +12,8 @@ import java.util.Collections;
  */
 public class PrintAscendingCommand extends Command {
     private final CollectionManager manager;
-    public PrintAscendingCommand(IOManager io, CollectionManager manager) {
-        super(0, io);
+    public PrintAscendingCommand(CollectionManager manager) {
+
         this.manager = manager;
     }
 
@@ -21,13 +21,17 @@ public class PrintAscendingCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      */
     @Override
-    public void execute(String[] args) {
+    public ServerResponse execute(String[] args, Route route) {
         ArrayList<Route> listCopy = new ArrayList<>(manager.getCollection());
         Collections.sort(listCopy);
+
+        String s = "";
         for (Route r : listCopy) {
-            getIOManager().println(r);
+            s = s + r + '\n';
         }
+        return new ServerResponse(s);
     }
 }

@@ -1,15 +1,15 @@
 package ilya.lab.server.Сommands;
 
-import ilya.lab.client.IO.IOManager;
-import ilya.lab.client.Utility.CollectionManager;
+import ilya.lab.common.Classes.Route;
+import ilya.lab.common.Requests.ServerResponse;
+import ilya.lab.server.ServerUtil.CollectionManager;
 
 /**
  * clear command
  */
 public class ClearCommand extends Command {
     private final CollectionManager manager;
-    public ClearCommand(IOManager io, CollectionManager manager) {
-        super(0, io);
+    public ClearCommand(CollectionManager manager) {
         this.manager = manager;
     }
 
@@ -17,11 +17,12 @@ public class ClearCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      */
     @Override
-    public void execute(String[] args) {
+    public ServerResponse execute(String[] args, Route route) {
         manager.clearCollection();
-        getIOManager().printConfirmation("Collection cleared successfully");
 
+        return new ServerResponse("Collection cleared successfully");
     }
 }

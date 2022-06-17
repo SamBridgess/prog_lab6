@@ -1,4 +1,4 @@
-package ilya.lab.client.Messages;
+package ilya.lab.client.NetStuff;
 
 import ilya.lab.common.Requests.ClientMessage;
 
@@ -8,11 +8,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class ClientMessenger {
-    public static void send(ClientMessage commandMessage) throws IOException {
+    public void send(ClientMessage clientMessage) throws IOException {
         Socket sock = new Socket("127.0.0.1", 6789);
         OutputStream os = sock.getOutputStream();
 
         ObjectOutputStream oos = new ObjectOutputStream(os);
-        oos.writeObject(commandMessage);
+        oos.writeObject(clientMessage);
     }
 }

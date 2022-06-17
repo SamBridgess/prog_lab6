@@ -1,9 +1,8 @@
 package ilya.lab.server.Сommands;
 
+import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.Utility.LineExecuter;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +14,7 @@ import java.util.HashMap;
 public class ExecuteScriptCommand extends Command {
     private final HashMap<String, Command> commands;
 
-    public ExecuteScriptCommand(IOManager io, HashMap<String, Command> commands) {
-        super(1, io);
+    public ExecuteScriptCommand(HashMap<String, Command> commands) {
         this.commands = commands;
     }
 
@@ -24,12 +22,13 @@ public class ExecuteScriptCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      * @throws IOException
      * @throws CtrlDException
      * @throws WrongFileFormatException
      */
     @Override
-    public void execute(String[] args) throws IOException, CtrlDException, WrongFileFormatException {
+    public void execute(String[] args, Route route) throws IOException, CtrlDException, WrongFileFormatException {
         File file = new File(args[0]);
         if (!file.exists()) {
             getIOManager().printWarning("File \"" + file.getName() + "\" not found!");

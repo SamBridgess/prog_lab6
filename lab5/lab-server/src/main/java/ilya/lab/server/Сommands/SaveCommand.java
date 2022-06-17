@@ -1,8 +1,8 @@
 package ilya.lab.server.Сommands;
 
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.Utility.CollectionManager;
-import ilya.lab.server.Utility.XmlParser;
+import ilya.lab.common.Classes.Route;
+import ilya.lab.server.ServerUtil.CollectionManager;
+import ilya.lab.server.ServerUtil.XmlParser;
 
 import java.io.IOException;
 
@@ -12,8 +12,7 @@ import java.io.IOException;
 public class SaveCommand extends Command {
     private final CollectionManager manager;
     private final String path;
-    public SaveCommand(IOManager io, CollectionManager manager, String path) {
-        super(0, io);
+    public SaveCommand(CollectionManager manager, String path) {
         this.manager = manager;
         this.path = path;
     }
@@ -22,10 +21,11 @@ public class SaveCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      * @throws IOException
      */
     @Override
-    public void execute(String[] args) throws IOException {
+    public void execute(String[] args, Route route) throws IOException {
         XmlParser.convertCollectionToXml(manager, path);
         getIOManager().printConfirmation("Collection was saved successfully");
     }

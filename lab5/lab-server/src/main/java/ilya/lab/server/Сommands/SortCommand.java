@@ -1,15 +1,15 @@
 package ilya.lab.server.Сommands;
 
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.Utility.CollectionManager;
+import ilya.lab.common.Classes.Route;
+import ilya.lab.common.Requests.ServerResponse;
+import ilya.lab.server.ServerUtil.CollectionManager;
 
 /**
  * sort command
  */
 public class SortCommand extends Command {
     private final CollectionManager manager;
-    public SortCommand(IOManager io, CollectionManager manager) {
-        super(0, io);
+    public SortCommand(CollectionManager manager) {
         this.manager = manager;
     }
 
@@ -17,10 +17,12 @@ public class SortCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      */
     @Override
-    public void execute(String[] args) {
+    public ServerResponse execute(String[] args, Route route) {
         manager.sortCollection();
-        getIOManager().printConfirmation("Collection sorted successfully");
+
+        return new ServerResponse("Collection sorted successfully");
     }
 }

@@ -1,15 +1,15 @@
 package ilya.lab.server.Сommands;
 
-import ilya.lab.server.IO.IOManager;
-import ilya.lab.server.Utility.CollectionManager;
+import ilya.lab.common.Classes.Route;
+import ilya.lab.common.Requests.ServerResponse;
+import ilya.lab.server.ServerUtil.CollectionManager;
 
 /**
  * print_field_descending_distance command
  */
 public class PrintFieldDescendingDistanceCommand extends Command {
     private final CollectionManager manager;
-    public PrintFieldDescendingDistanceCommand(IOManager io, CollectionManager manager) {
-        super(0, io);
+    public PrintFieldDescendingDistanceCommand(CollectionManager manager) {
         this.manager = manager;
     }
 
@@ -17,11 +17,14 @@ public class PrintFieldDescendingDistanceCommand extends Command {
      * executes command with arguments
      *
      * @param args      arguments
+     * @param route     potential new element
      */
     @Override
-    public void execute(String[] args) {
+    public ServerResponse execute(String[] args, Route route) {
+        String s = "";
         for (Float f : manager.createDistanceList()) {
-            getIOManager().println(f);
+            s = s + f + '\n';
         }
+        return new ServerResponse(s);
     }
 }

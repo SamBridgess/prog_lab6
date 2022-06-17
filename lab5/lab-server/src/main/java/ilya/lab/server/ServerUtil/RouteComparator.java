@@ -1,4 +1,4 @@
-package ilya.lab.server.Utility;
+package ilya.lab.server.ServerUtil;
 
 
 import ilya.lab.common.Classes.Route;
