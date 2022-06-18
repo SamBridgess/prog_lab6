@@ -35,8 +35,19 @@ public final class LineValidator {
      * @throws WrongFileFormatException
      * @throws CtrlDException
      */
-    public static boolean checkLine(String command, String[] args, HashMap<String, CommandInfo> commandsInfo, IOManager io) throws IOException, WrongFileFormatException, CtrlDException {
+    public static boolean checkLine(String command, String[] args, HashMap<String, CommandRules> commandsInfo, IOManager io) throws IOException, WrongFileFormatException, CtrlDException {
         if (commandsInfo.containsKey(command)) {
+            if (!checkNumberOfArguments(commandsInfo.get(command).getNumberOfArgs(), args.length)) {
+                io.printWarning("Wrong number of arguments!");
+                return false;
+            }
+            return true;
+        } else {
+            io.printWarning("Command \"" + command + "\" not found!");
+            return false;
+        }
+
+        /*if (commandsInfo.containsKey(command)) {
             if (!checkNumberOfArguments(commandsInfo.get(command).getNumberOfArgs(), args.length)) {
                 io.printWarning("Wrong number of arguments!");
                 if (io.getIsFile()) {
@@ -51,6 +62,6 @@ public final class LineValidator {
                 return false;
             }
         }
-        return true;
+        return true;*/
     }
 }

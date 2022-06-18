@@ -2,6 +2,7 @@ package ilya.lab.server.Сommands;
 
 import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
+import ilya.lab.common.Requests.ServerResponse;
 import ilya.lab.server.ServerUtil.CollectionManager;
 
 /**
@@ -21,21 +22,13 @@ public class RemoveByIdCommand extends Command {
      * @throws WrongFileFormatException
      */
     @Override
-    public void execute(String[] args, Route route) throws WrongFileFormatException {
-        try {
-            if (manager.removeRouteByID(Long.parseLong(args[0]))) {
-                getIOManager().printConfirmation("Element removed successfully");
-            } else {
-                getIOManager().printWarning("There is no element with such ID in collection");
-                if (getIOManager().getIsFile()) {
-                    throw new WrongFileFormatException();
-                }
-            }
-        } catch (NumberFormatException e) {
-            getIOManager().printWarning("Invalid command's arguments!");
-            if (getIOManager().getIsFile()) {
-                throw new WrongFileFormatException();
-            }
+    public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException {
+        if (manager.removeRouteByID(Long.parseLong(args[0]))) {
+            return new ServerResponse("Element removed successfully", false, false);
+        } else {
+            return new ServerResponse("There is no element with such ID in collection", false, isFile);
         }
+
+
     }
 }

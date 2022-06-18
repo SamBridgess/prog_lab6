@@ -4,7 +4,7 @@ package ilya.lab.client.IO;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.InvalidValueException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
-import ilya.lab.client.ClientUtil.ValueValidator;
+import ilya.lab.client.ClientUtil.RouteValueValidator;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * manages input of a field checking input restrictions
  */
-public class FieldInputManager {
+public class RouteFieldInputManager {
     /**
      * loops input until all field requirements are fulfilled
      *
@@ -25,7 +25,7 @@ public class FieldInputManager {
      * @throws WrongFileFormatException
      * @throws CtrlDException
      */
-    public <T> T validatedLoopInput(String message, IOManager io, Class<T> clazz, ValueValidator validator) throws WrongFileFormatException, CtrlDException {
+    public <T> T validatedLoopInput(String message, IOManager io, Class<T> clazz, RouteValueValidator validator) throws WrongFileFormatException, CtrlDException {
         while (true) {
             try {
                 if (!io.getIsFile()) {

@@ -23,14 +23,14 @@ public class ShowCommand extends Command {
      * @param route     potential new element
      */
     @Override
-    public ServerResponse execute(String[] args, Route route) {
+    public ServerResponse execute(String[] args, Route route, boolean isFile) {
         ArrayList<Route> listCopy = new ArrayList<>(manager.getCollection());
         Collections.sort(listCopy);
 
-        String s = "";
+        String message = "";
         for (Route r : listCopy) {
-            s = s + r + '\n';
+            message = message + r + '\n';
         }
-        return new ServerResponse(s);
+        return new ServerResponse(message, false, false);
     }
 }

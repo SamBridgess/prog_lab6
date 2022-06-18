@@ -24,9 +24,9 @@ public class AddCommand extends Command {
      * @throws CtrlDException
      */
     @Override
-    public ServerResponse execute(String[] args, Route route) throws WrongFileFormatException, CtrlDException {
+    public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException, CtrlDException {
         manager.addNewElement(route);
 
-        return new ServerResponse("Element added successfully");
+        return new ServerResponse("Element added successfully", false, false);
     }
 }

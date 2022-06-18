@@ -21,7 +21,7 @@ public class InfoCommand extends Command {
      * @param route     potential new element
      */
     @Override
-    public ServerResponse execute(String[] args, Route route) {
-        return new ServerResponse(manager.getInfo());
+    public ServerResponse execute(String[] args, Route route, boolean isFile) {
+        return new ServerResponse(manager.getInfo(), false, false);
     }
 }

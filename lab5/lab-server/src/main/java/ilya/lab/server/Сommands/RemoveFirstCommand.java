@@ -2,6 +2,7 @@ package ilya.lab.server.Сommands;
 
 import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
+import ilya.lab.common.Requests.ServerResponse;
 import ilya.lab.server.ServerUtil.CollectionManager;
 
 /**
@@ -21,14 +22,11 @@ public class RemoveFirstCommand extends Command {
      * @throws WrongFileFormatException
      */
     @Override
-    public void execute(String[] args, Route route) throws WrongFileFormatException {
+    public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException {
         if (manager.removeRouteByIdx(0)) {
-            getIOManager().printConfirmation("First element removed successfully");
+            return new ServerResponse("First element removed succesfully", false, false);
         } else {
-            getIOManager().printWarning("Collection is empty, no first element");
-            if (getIOManager().getIsFile()) {
-                throw new WrongFileFormatException();
-            }
+            return new ServerResponse("Collection is empty, no first element", false, isFile);
         }
     }
 }

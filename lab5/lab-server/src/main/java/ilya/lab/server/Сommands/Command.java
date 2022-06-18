@@ -14,5 +14,5 @@ import java.io.IOException;
 public abstract class Command {
     public Command() {
     }
-    public abstract ServerResponse execute(String[] args, Route route) throws IOException, WrongFileFormatException, CtrlDException;
+    public abstract ServerResponse execute(String[] args, Route route, boolean isFile) throws IOException, WrongFileFormatException, CtrlDException;
 }

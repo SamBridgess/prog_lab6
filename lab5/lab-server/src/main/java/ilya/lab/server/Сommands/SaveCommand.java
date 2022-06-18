@@ -1,6 +1,7 @@
 package ilya.lab.server.Сommands;
 
 import ilya.lab.common.Classes.Route;
+import ilya.lab.common.Requests.ServerResponse;
 import ilya.lab.server.ServerUtil.CollectionManager;
 import ilya.lab.server.ServerUtil.XmlParser;
 
@@ -25,8 +26,8 @@ public class SaveCommand extends Command {
      * @throws IOException
      */
     @Override
-    public void execute(String[] args, Route route) throws IOException {
+    public ServerResponse execute(String[] args, Route route, boolean isFile) throws IOException {
         XmlParser.convertCollectionToXml(manager, path);
-        getIOManager().printConfirmation("Collection was saved successfully");
+        return new ServerResponse("Collection was saved successfully", false, false);
     }
 }

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * contains field's value restrictions
  */
-public class ValueValidator {
+public class RouteValueValidator {
     private final Number[] banned;
     private final float biggerThan;
     private final float lessThan;
@@ -18,7 +18,7 @@ public class ValueValidator {
      * @param lessThan      field must be lower than this number
      * @param canBeNull     defines whether a filed can be null
      */
-    public ValueValidator(Number[] banned, float biggerThan, float lessThan, boolean canBeNull) {
+    public RouteValueValidator(Number[] banned, float biggerThan, float lessThan, boolean canBeNull) {
         this.banned = banned;
         this.biggerThan = biggerThan;
         this.lessThan = lessThan;

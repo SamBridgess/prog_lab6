@@ -20,9 +20,9 @@ public class SortCommand extends Command {
      * @param route     potential new element
      */
     @Override
-    public ServerResponse execute(String[] args, Route route) {
+    public ServerResponse execute(String[] args, Route route, boolean isFile) {
         manager.sortCollection();
 
-        return new ServerResponse("Collection sorted successfully");
+        return new ServerResponse("Collection sorted successfully", false, false);
     }
 }

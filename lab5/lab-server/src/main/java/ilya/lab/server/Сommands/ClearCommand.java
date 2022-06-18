@@ -20,9 +20,9 @@ public class ClearCommand extends Command {
      * @param route     potential new element
      */
     @Override
-    public ServerResponse execute(String[] args, Route route) {
+    public ServerResponse execute(String[] args, Route route, boolean isFile) {
         manager.clearCollection();
 
-        return new ServerResponse("Collection cleared successfully");
+        return new ServerResponse("Collection cleared successfully", false, false);
     }
 }

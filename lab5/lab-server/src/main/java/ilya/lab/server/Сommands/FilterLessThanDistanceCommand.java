@@ -2,6 +2,7 @@ package ilya.lab.server.Сommands;
 
 import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
+import ilya.lab.common.Requests.ServerResponse;
 import ilya.lab.server.ServerUtil.CollectionManager;
 
 /**
@@ -21,18 +22,13 @@ public class FilterLessThanDistanceCommand extends Command {
      * @throws WrongFileFormatException
      */
     @Override
-    public void execute(String[] args, Route route) throws WrongFileFormatException {
-        try {
-            for (Route r : manager.getCollection()) {
-                if (r.getDistance() < Float.parseFloat(args[0])) {
-                    getIOManager().println(r);
-                }
-            }
-        } catch (NumberFormatException e) {
-            getIOManager().printWarning("Invalid command's arguments!");
-            if (getIOManager().getIsFile()) {
-                throw new WrongFileFormatException();
+    public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException {
+        String message = "";
+        for (Route r : manager.getCollection()) {
+            if (r.getDistance() < Float.parseFloat(args[0])) {//todo stream api
+                message = message + r + '\n';
             }
         }
+        return new ServerResponse(message, false, false);
     }
 }

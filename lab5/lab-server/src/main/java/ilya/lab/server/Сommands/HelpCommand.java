@@ -18,7 +18,7 @@ public class HelpCommand extends Command {
      * @param route     potential new element
      */
     @Override
-    public ServerResponse execute(String[] args, Route route) {
+    public ServerResponse execute(String[] args, Route route, boolean isFile) {
         String help = "help : вывести справку по доступным командам\n"
                 + "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n"
                 + "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n"
@@ -35,7 +35,7 @@ public class HelpCommand extends Command {
                 + "filter_less_than_distance distance : вывести элементы, значение поля distance которых меньше заданного\n"
                 + "print_ascending : вывести элементы коллекции в порядке возрастания\n"
                 + "print_field_descending_distance : вывести значения поля distance всех элементов в порядке убывания";
-        return new ServerResponse(help);
+        return new ServerResponse(help, false, false);
     }
 
 

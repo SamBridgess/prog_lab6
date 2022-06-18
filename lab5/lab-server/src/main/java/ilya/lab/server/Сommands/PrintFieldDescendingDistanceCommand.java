@@ -20,11 +20,11 @@ public class PrintFieldDescendingDistanceCommand extends Command {
      * @param route     potential new element
      */
     @Override
-    public ServerResponse execute(String[] args, Route route) {
-        String s = "";
+    public ServerResponse execute(String[] args, Route route, boolean isFile) {
+        String message = "";
         for (Float f : manager.createDistanceList()) {
-            s = s + f + '\n';
+            message = message + f + '\n';
         }
-        return new ServerResponse(s);
+        return new ServerResponse(message, false, false);
     }
 }

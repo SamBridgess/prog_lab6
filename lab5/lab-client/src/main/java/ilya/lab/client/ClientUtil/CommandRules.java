@@ -1,12 +1,17 @@
 package ilya.lab.client.ClientUtil;
 
-public class CommandInfo {
+public class CommandRules {
     private Integer numberOfArgs;
-    private boolean requiresNewRoute;
-    public CommandInfo(Integer numberOfArgs, boolean requiresNewRoute) {
+    private boolean requiresNewRoute = false;
+
+    public CommandRules(Integer numberOfArgs) {
+        this.numberOfArgs = numberOfArgs;
+    }
+    public CommandRules(Integer numberOfArgs, boolean requiresNewRoute) {
         this.numberOfArgs = numberOfArgs;
         this.requiresNewRoute = requiresNewRoute;
     }
+
     public Integer getNumberOfArgs() {
         return numberOfArgs;
     }

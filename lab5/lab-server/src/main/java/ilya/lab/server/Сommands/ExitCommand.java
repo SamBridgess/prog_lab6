@@ -2,6 +2,7 @@ package ilya.lab.server.Сommands;
 
 
 import ilya.lab.common.Classes.Route;
+import ilya.lab.common.Requests.ServerResponse;
 
 
 import java.io.IOException;
@@ -21,11 +22,8 @@ public class ExitCommand extends Command {
      * @throws IOException
      */
     @Override
-    public void execute(String[] args, Route route) throws IOException {
-        getIOManager().close();
-        getIOManager().printConfirmation("Exiting...");
-
-        getIOManager().setContinueExecutionFlag(false);
+    public ServerResponse execute(String[] args, Route route, boolean isFile) throws IOException {
+        return new ServerResponse("Exiting...", true, false);
     }
 }
 

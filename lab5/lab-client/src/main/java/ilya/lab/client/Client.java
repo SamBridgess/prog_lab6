@@ -1,7 +1,7 @@
 package ilya.lab.client;
 
 
-import ilya.lab.client.ClientUtil.CommandInfo;
+import ilya.lab.client.ClientUtil.CommandRules;
 import ilya.lab.client.ClientUtil.CommandSplitter;
 import ilya.lab.client.ClientUtil.LineValidator;
 import ilya.lab.client.ClientUtil.RouteCreator;
@@ -11,6 +11,7 @@ import ilya.lab.common.Requests.ClientMessage;
 import ilya.lab.client.NetStuff.ClientMessenger;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
+import ilya.lab.common.Requests.ServerResponse;
 
 import java.io.*;
 import java.util.HashMap;
@@ -22,9 +23,9 @@ public final class Client {
 
     public static void main(String[] args) {
         try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)), new PrintWriter(System.out, true))) {
-            HashMap<String, CommandInfo> commandsInfo = createCommandsInfo();
+            HashMap<String, CommandRules> commandsInfo = createCommandsInfo();
             ClientMessenger clientMessenger = new ClientMessenger();
-            while (io.getContinueExecutionFlag()) { // todo exit wont work properly here
+            while (io.getContinueExecutionFlag()) {
                 try {
                     io.print(">>> ");
                     String s = io.getNextLine();
@@ -38,13 +39,20 @@ public final class Client {
                             route = new RouteCreator(io).createRoute();
                         }
 
-                        ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(), commandSplitter.getArgs(), route);
-                        clientMessenger.send(clientMessage);
+                        //todo switch between console and file
+                        ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(), commandSplitter.getArgs(), route, false);
+                        ServerResponse serverResponse = clientMessenger.send(clientMessage);
+                        io.println(serverResponse.getResponseMessage());
+                        if(serverResponse.getDisconnectClient()) {
+                            return;
+                        }
                     }
                 } catch (CtrlDException e) {
                     io.printWarning("ctrl + D detected! Exiting program...");
                     return;
                 } catch (WrongFileFormatException e) {
+                    io.printWarning("Can't execute script(s) further! Wrong file(s) format");
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
@@ -52,24 +60,24 @@ public final class Client {
             System.out.println("Unexpected exception!");
         }
     }
-    public static HashMap<String, CommandInfo> createCommandsInfo() {
-        HashMap<String, CommandInfo> commandsInfo = new HashMap<>();
-        commandsInfo.put("help", new CommandInfo(0, false));
-        commandsInfo.put("info", new CommandInfo(0, false));
-        commandsInfo.put("show", new CommandInfo(0, false));
-        commandsInfo.put("add", new CommandInfo(0, true));
-        commandsInfo.put("update", new CommandInfo(1, true));
-        commandsInfo.put("remove_by_id", new CommandInfo(1, false));
-        commandsInfo.put("clear", new CommandInfo(0, false));
-        commandsInfo.put("save", new CommandInfo(0, false));
-        commandsInfo.put("execute_script", new CommandInfo(1, false));
-        commandsInfo.put("exit", new CommandInfo(0, false));
-        commandsInfo.put("remove_first", new CommandInfo(0, false));
-        commandsInfo.put("remove_lower", new CommandInfo(0, true));
-        commandsInfo.put("sort", new CommandInfo(0, false));
-        commandsInfo.put("filter_less_than_distance", new CommandInfo(1, false));
-        commandsInfo.put("print_ascending", new CommandInfo(0, false));
-        commandsInfo.put("print_field_descending_distance", new CommandInfo(0, false));
+    public static HashMap<String, CommandRules> createCommandsInfo() {
+        HashMap<String, CommandRules> commandsInfo = new HashMap<>();
+        commandsInfo.put("help", new CommandRules(0));
+        commandsInfo.put("info", new CommandRules(0));
+        commandsInfo.put("show", new CommandRules(0));
+        commandsInfo.put("add", new CommandRules(0, true));
+        commandsInfo.put("update", new CommandRules(1, true));
+        commandsInfo.put("remove_by_id", new CommandRules(1));
+        commandsInfo.put("clear", new CommandRules(0));
+        commandsInfo.put("save", new CommandRules(0));
+        commandsInfo.put("execute_script", new CommandRules(1));
+        commandsInfo.put("exit", new CommandRules(0));
+        commandsInfo.put("remove_first", new CommandRules(0));
+        commandsInfo.put("remove_lower", new CommandRules(0, true));
+        commandsInfo.put("sort", new CommandRules(0));
+        commandsInfo.put("filter_less_than_distance", new CommandRules(1));
+        commandsInfo.put("print_ascending", new CommandRules(0));
+        commandsInfo.put("print_field_descending_distance", new CommandRules(0));
         return commandsInfo;
     }
 
