@@ -33,7 +33,10 @@ public class CollectionManager {
      * @return          returns newly generated ID
      */
     public Long assignNewId() {
-        return maxId++;
+        for (Route r : collection) {
+            maxId = Math.max(r.getId(), maxId);
+        }
+        return ++maxId;
     }
 
     /**
@@ -137,14 +140,6 @@ public class CollectionManager {
         collection.add(route);
     }
 
-    /**
-     * sets minimal ID after loading from xml file
-     */
-    public void setMinId() {
-        for (Route r : collection) {
-            maxId = Math.max(r.getId() + 1, maxId);
-        }
-    }
 
     /**
      * @return      returns collection

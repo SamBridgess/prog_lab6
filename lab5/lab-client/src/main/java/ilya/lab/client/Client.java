@@ -1,10 +1,7 @@
 package ilya.lab.client;
 
 
-import ilya.lab.client.ClientUtil.CommandRules;
-import ilya.lab.client.ClientUtil.CommandSplitter;
-import ilya.lab.client.ClientUtil.LineValidator;
-import ilya.lab.client.ClientUtil.RouteCreator;
+import ilya.lab.client.ClientUtil.*;
 import ilya.lab.client.IO.IOManager;
 import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Requests.ClientMessage;
@@ -25,26 +22,38 @@ public final class Client {
         try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)), new PrintWriter(System.out, true))) {
             HashMap<String, CommandRules> commandsInfo = createCommandsInfo();
             ClientMessenger clientMessenger = new ClientMessenger();
+            ScriptManager scriptManager = new ScriptManager(io);
             while (io.getContinueExecutionFlag()) {
                 try {
-                    io.print(">>> ");
+                    if(!io.getIsFile()) {
+                        io.print(">>> ");
+                    }
                     String s = io.getNextLine();
                     CommandSplitter commandSplitter = new CommandSplitter(s);
                     String command = commandSplitter.getCommand();
                     String[] arguments = commandSplitter.getArgs();
 
                     if(LineValidator.checkLine(command, arguments, commandsInfo, io)) {
-                        Route route = null;
-                        if (commandsInfo.get(command).getRequiresNewRoute()) {
-                            route = new RouteCreator(io).createRoute();
-                        }
+                        if(command.equals("execute_script")) {
+                            scriptManager.addScript(arguments[0]);
+                        } else {
+                            Route route = null;
+                            if (commandsInfo.get(command).getRequiresNewRoute()) {
+                                route = new RouteCreator(io).createRoute();
+                            }
 
-                        //todo switch between console and file
-                        ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(), commandSplitter.getArgs(), route, false);
-                        ServerResponse serverResponse = clientMessenger.send(clientMessage);
-                        io.println(serverResponse.getResponseMessage());
-                        if(serverResponse.getDisconnectClient()) {
-                            return;
+                            ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(), commandSplitter.getArgs(), route, io.getIsFile());
+                            ServerResponse serverResponse = clientMessenger.send(clientMessage);
+                            io.println(serverResponse.getResponseMessage());
+
+                            if(serverResponse.getDisconnectClient()) {
+                                io.setContinueExecutionFlag(false);
+                                io.close();
+                                return;
+                            }
+                            if(serverResponse.getWrongScriptFormat()) { //todo wrong file format?
+                                throw new WrongFileFormatException();
+                            }
                         }
                     }
                 } catch (CtrlDException e) {

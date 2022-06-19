@@ -2,13 +2,14 @@ package ilya.lab.common.Classes;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * describes route coordinates by x and y coordinates
  */
 @XmlType(propOrder = {"x", "y"})
-public class Coordinates {
+public class Coordinates implements Serializable {
     private int x;
     private long y;
 

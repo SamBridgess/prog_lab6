@@ -29,6 +29,7 @@ public class FilterLessThanDistanceCommand extends Command {
                 message = message + r + '\n';
             }
         }
+        message = message.substring(0, message.length() - 1);
         return new ServerResponse(message, false, false);
     }
 }

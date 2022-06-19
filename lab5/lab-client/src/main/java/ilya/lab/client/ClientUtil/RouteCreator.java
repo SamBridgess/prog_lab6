@@ -3,7 +3,6 @@ package ilya.lab.client.ClientUtil;
 
 import ilya.lab.client.IO.RouteFieldInputManager;
 import ilya.lab.client.IO.IOManager;
-import ilya.lab.common.Requests.ClientIdRequest;
 import ilya.lab.common.Classes.Coordinates;
 import ilya.lab.common.Classes.Location;
 import ilya.lab.common.Classes.Route;
@@ -67,7 +66,7 @@ public final class RouteCreator {
 
         float distance = inputManager.validatedLoopInput("Enter distance: ", io, Float.class, new RouteValueValidator(new Number[]{}, distanceBiggerThan, noMax, false));
 
-        return new Route(new ClientIdRequest().requestId(), name, coordinates, from, to, distance);
+        return new Route(0L, name, coordinates, from, to, distance);
     }
 
 }

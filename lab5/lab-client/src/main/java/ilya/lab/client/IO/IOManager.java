@@ -56,7 +56,7 @@ public class IOManager implements AutoCloseable {
     }
 
     /**
-     * @return      returns if last added script was fully executed and if it was
+     * @return      returns if last added script was fully executed
      */
     public boolean isLastFileExecuted() {
         return executionStack.peek().isEmpty();
@@ -70,11 +70,15 @@ public class IOManager implements AutoCloseable {
     public String getNextLine() throws IOException, CtrlDException {
         String s;
         if (getIsFile()) {
-            if (executionStack.peek().isEmpty()) {
+            if (executionStack.peek().isEmpty()) {// todo remove?
                 return null;
             }
             s = executionStack.peek().get(0);
             executionStack.peek().remove(0);
+            if(isLastFileExecuted()) {
+                printConfirmation(fileStack.peek().getName() + " executed successfully");
+                popFile();
+            }
         } else {
             s = reader.readLine();
             if (s == null & !getIsFile()) {
@@ -99,7 +103,7 @@ public class IOManager implements AutoCloseable {
     }
 
     /**
-     * pops fileStack and execution Stack
+     * pops fileStack and executionStack
      */
     public void popFile() {
         if (!executionStack.isEmpty() & !fileStack.isEmpty()) {

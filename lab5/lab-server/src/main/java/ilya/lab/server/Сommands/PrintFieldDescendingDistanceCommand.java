@@ -25,6 +25,7 @@ public class PrintFieldDescendingDistanceCommand extends Command {
         for (Float f : manager.createDistanceList()) {
             message = message + f + '\n';
         }
+        message = message.substring(0, message.length() - 1);
         return new ServerResponse(message, false, false);
     }
 }

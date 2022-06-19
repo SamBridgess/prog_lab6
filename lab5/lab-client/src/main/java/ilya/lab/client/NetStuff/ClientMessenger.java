@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientMessenger {
-    private String host = "localhost";
+    private String host = "127.0.0.1";
     private int port = 3191;
     public ServerResponse send(ClientMessage clientMessage) throws IOException, ClassNotFoundException {
         Socket socket = new Socket(host, port);

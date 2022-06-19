@@ -41,6 +41,19 @@ public final class LineValidator {
                 io.printWarning("Wrong number of arguments!");
                 return false;
             }
+            try {
+                if (command.equals("update")) {
+                    Long.parseLong(args[0]);
+                }
+                if (command.equals("remove_by_id")) {
+                    Long.parseLong(args[0]);
+                }
+                if (command.equals("filter_less_than_distance")) {
+                    Float.parseFloat(args[0]);
+                }
+            } catch (NumberFormatException e) {
+                return false;
+            }
             return true;
         } else {
             io.printWarning("Command \"" + command + "\" not found!");

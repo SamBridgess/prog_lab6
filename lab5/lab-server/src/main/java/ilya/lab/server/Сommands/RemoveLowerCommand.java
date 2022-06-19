@@ -26,6 +26,7 @@ public class RemoveLowerCommand extends Command {
      */
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException, CtrlDException {
+        route.setId(manager.assignNewId());
         manager.removeAllLower(route);
 
         return new ServerResponse("Elements removed successfully", false, false);

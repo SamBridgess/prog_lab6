@@ -2,13 +2,14 @@ package ilya.lab.common.Classes;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * describes location by x, y and z coordinates and given name
  */
 @XmlType(propOrder = {"x", "y", "z", "name"})
-public class Location {
+public class Location implements Serializable {
     private Integer x;
     private long y;
     private double z;

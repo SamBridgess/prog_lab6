@@ -3,6 +3,7 @@ package ilya.lab.server.Сommands;
 import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
+import ilya.lab.common.Requests.ServerResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +29,8 @@ public class ExecuteScriptCommand extends Command {
      * @throws WrongFileFormatException
      */
     @Override
-    public void execute(String[] args, Route route) throws IOException, CtrlDException, WrongFileFormatException {
-        File file = new File(args[0]);
+    public ServerResponse execute(String[] args, Route route, boolean isFile) throws IOException, CtrlDException, WrongFileFormatException {
+       /* File file = new File(args[0]);
         if (!file.exists()) {
             getIOManager().printWarning("File \"" + file.getName() + "\" not found!");
             return;
@@ -48,5 +49,7 @@ public class ExecuteScriptCommand extends Command {
             getIOManager().popFile();
         }
         getIOManager().printConfirmation(file.getName() + " executed successfully");
+         */
+        return null;
     }
 }

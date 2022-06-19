@@ -13,22 +13,25 @@ import java.net.Socket;
 public class ServerMessenger {
     private ServerSocket serverSocket;
     private Socket socket;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
     public ServerMessenger(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
-    //private int port = 3191;
-    public ClientMessage recieve() throws IOException, ClassNotFoundException {
+    public ClientMessage receive() throws IOException, ClassNotFoundException {
         socket = serverSocket.accept();
 
-        ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-        ClientMessage clientMessage = (ClientMessage) inStream.readObject();
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        inputStream = new ObjectInputStream(socket.getInputStream());
 
+        System.out.println("about to receive!");
+        ClientMessage clientMessage = (ClientMessage) inputStream.readObject();
+
+        System.out.println("received!");
        //serverSocket.close();todo
         return clientMessage;
     }
     public void sendResponse(ServerResponse serverResponse) throws IOException {
-        ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
-        outStream.writeObject(serverResponse);
+        outputStream.writeObject(serverResponse);
     }
-
 }

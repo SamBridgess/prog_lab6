@@ -23,27 +23,29 @@ public final class Server {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, CtrlDException, WrongFileFormatException, JAXBException {
         int port = 3191;
-        String path = "SomeFile.txt";
+        String path = "Collection.xml";
+        try(ServerSocket serverSocket = new ServerSocket(port)) {
+            CollectionManager manager = XmlParser.convertXmlToCollection(path);
+            HashMap<String, Command> commands = createCommandsMap(manager, path);
 
-        CollectionManager manager =  XmlParser.convertXmlToCollection(path);
-        HashMap<String, Command> commands = createCommandsMap(manager, path);
+            ServerMessenger serverMessenger = new ServerMessenger(serverSocket);
+            while(true){
+                ClientMessage clientMessage = serverMessenger.receive();
+                String command = clientMessage.getCommand();
+                String[] arguments = clientMessage.getArgs();
+                Route route = clientMessage.getRoute();
+                boolean isFile = clientMessage.getIsFile();
 
+                ServerResponse serverResponse = commands.get(command).execute(arguments, route, isFile);
+                serverMessenger.sendResponse(serverResponse);
 
-        ServerSocket serverSocket = new ServerSocket(port);
-        ServerMessenger serverMessenger = new ServerMessenger(serverSocket);
-        while(true){
-            ClientMessage clientMessage = serverMessenger.recieve();
-            String command = clientMessage.getCommand();
-            String[] arguments = clientMessage.getArgs();
-            Route route = clientMessage.getRoute();
-            boolean isFile = clientMessage.getIsFile();
-
-            ServerResponse serverResponse = commands.get(command).execute(arguments, route, isFile);
-            serverMessenger.sendResponse(serverResponse);
-
-
-            XmlParser.convertCollectionToXml(manager, path);
+                XmlParser.convertCollectionToXml(manager, path);
+            }
         }
+
+
+
+
     }
     private static HashMap<String, Command> createCommandsMap(CollectionManager manager, String path) {
         HashMap<String, Command> commands = new HashMap<>();

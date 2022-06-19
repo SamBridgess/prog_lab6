@@ -3,6 +3,7 @@ package ilya.lab.common.Classes;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
  */
 @XmlRootElement(name = "route")
 @XmlType(propOrder = {"id", "name", "coordinates", "creationDate", "from", "to", "distance"})
-public class Route implements Comparable<Route> {
+public class Route implements Comparable<Route>, Serializable {
     private Long id;
     private String name;
     private Coordinates coordinates;
