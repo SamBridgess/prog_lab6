@@ -26,9 +26,8 @@ public class ServerMessenger {
 
         System.out.println("about to receive!");
         ClientMessage clientMessage = (ClientMessage) inputStream.readObject();
-
         System.out.println("received!");
-       //serverSocket.close();todo
+
         return clientMessage;
     }
     public void sendResponse(ServerResponse serverResponse) throws IOException {

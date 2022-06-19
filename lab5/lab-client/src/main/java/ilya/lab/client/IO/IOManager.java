@@ -56,9 +56,20 @@ public class IOManager implements AutoCloseable {
     }
 
     /**
+     * clears all stacks
+     *
+     */
+    public void clearStacks() {
+        executionStack.clear();
+        fileStack.clear();
+    }
+    /**
      * @return      returns if last added script was fully executed
      */
     public boolean isLastFileExecuted() {
+        if(executionStack.isEmpty()) {
+            return false;
+        }
         return executionStack.peek().isEmpty();
     }
 
@@ -75,10 +86,10 @@ public class IOManager implements AutoCloseable {
             }
             s = executionStack.peek().get(0);
             executionStack.peek().remove(0);
-            if(isLastFileExecuted()) {
+          /*  if(isLastFileExecuted()) {
                 printConfirmation(fileStack.peek().getName() + " executed successfully");
                 popFile();
-            }
+            }*/
         } else {
             s = reader.readLine();
             if (s == null & !getIsFile()) {
@@ -105,7 +116,7 @@ public class IOManager implements AutoCloseable {
     /**
      * pops fileStack and executionStack
      */
-    public void popFile() {
+    public void popStacks() {
         if (!executionStack.isEmpty() & !fileStack.isEmpty()) {
             executionStack.pop();
             fileStack.pop();
@@ -149,6 +160,10 @@ public class IOManager implements AutoCloseable {
      */
     public boolean getContinueExecutionFlag() {
         return continueExecutionFlag;
+    }
+
+    public Stack<File> getFileStack() {
+        return fileStack;
     }
 
     /***

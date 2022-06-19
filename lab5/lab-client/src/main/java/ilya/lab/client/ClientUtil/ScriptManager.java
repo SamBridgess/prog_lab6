@@ -14,14 +14,14 @@ public class ScriptManager {
     public void addScript(String path) throws WrongFileFormatException, IOException {
         File file = new File(path);
         if(!file.exists()) {
-            io.println("File \"" + file.getName() + "\" not found!");
+            io.printWarning("File \"" + file.getName() + "\" not found!");
         } else {
             if (!io.addFileToFileStack(file)) {
-                io.println("Recursion detected!");
+                io.printWarning("Recursion detected!");
                 throw new WrongFileFormatException();
             }
             io.fillExecutionStack(file);
-            io.println("Starting to execute " + file.getName());
+            io.printConfirmation("Starting to execute " + file.getName());
         }
     }
 }

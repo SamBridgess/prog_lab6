@@ -54,12 +54,23 @@ public final class Client {
                             if(serverResponse.getWrongScriptFormat()) { //todo wrong file format?
                                 throw new WrongFileFormatException();
                             }
+                            while(io.isLastFileExecuted()) {
+                                io.printConfirmation(io.getFileStack().peek().getName() + " executed successfully");
+                                io.popStacks();
+                            }
+                        }
+                    } else {
+                        io.printWarning("Invalid arguments");
+                        if(io.getIsFile()) {
+                            throw new WrongFileFormatException();
                         }
                     }
                 } catch (CtrlDException e) {
+                    io.clearStacks();
                     io.printWarning("ctrl + D detected! Exiting program...");
                     return;
                 } catch (WrongFileFormatException e) {
+                    io.clearStacks();
                     io.printWarning("Can't execute script(s) further! Wrong file(s) format");
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
