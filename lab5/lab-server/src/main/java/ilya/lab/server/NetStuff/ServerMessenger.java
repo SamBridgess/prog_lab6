@@ -24,13 +24,13 @@ public class ServerMessenger {
         outputStream = new ObjectOutputStream(socket.getOutputStream());
         inputStream = new ObjectInputStream(socket.getInputStream());
 
-        System.out.println("about to receive!");
         ClientMessage clientMessage = (ClientMessage) inputStream.readObject();
-        System.out.println("received!");
+        System.out.println("Packet received!");
 
         return clientMessage;
     }
     public void sendResponse(ServerResponse serverResponse) throws IOException {
         outputStream.writeObject(serverResponse);
+        System.out.println("Packet sent!");
     }
 }
