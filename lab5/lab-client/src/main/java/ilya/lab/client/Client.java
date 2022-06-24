@@ -24,7 +24,7 @@ public final class Client {
         throw new UnsupportedOperationException("This is an utility class and can not be instantiated");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)),
                 new PrintWriter(System.out, true))) {
             HashMap<String, CommandRules> commandsInfo = createCommandsInfo();
@@ -41,6 +41,9 @@ public final class Client {
                     String[] arguments = commandSplitter.getArgs();
 
                     if (LineValidator.checkLine(command, arguments, commandsInfo, io)) {
+                        if (command.equals("exit")) {
+                            return;
+                        }
                         if (command.equals("execute_script")) {
                             scriptManager.addScript(arguments[0]);
                         } else {
@@ -49,17 +52,11 @@ public final class Client {
                                 route = new RouteCreator(io).createRoute();
                             }
 
-                            ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(),
-                                    commandSplitter.getArgs(), route, io.getIsFile());
+                            ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(), commandSplitter.getArgs(), route, io.getIsFile());
                             ServerResponse serverResponse = clientMessenger.send(clientMessage);
                             io.println(serverResponse.getResponseMessage());
 
-                            if (serverResponse.getDisconnectClient()) {
-                                io.setContinueExecutionFlag(false);
-                                io.close();
-                                return;
-                            }
-                            if (serverResponse.getWrongScriptFormat()) { // todo wrong file format?
+                            if (serverResponse.getWrongScriptFormat()) {
                                 throw new WrongFileFormatException();
                             }
                             while (io.isLastFileExecuted()) {
@@ -81,8 +78,6 @@ public final class Client {
                 } catch (WrongFileFormatException e) {
                     io.clearStacks();
                     io.printWarning("Can't execute script(s) further! Wrong file(s) format");
-                } catch (ClassNotFoundException e) {
-
                 }
             }
         } catch (IOException e) {

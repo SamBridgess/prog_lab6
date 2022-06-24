@@ -28,6 +28,6 @@ public class SaveCommand extends Command {
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) throws IOException {
         XmlParser.convertCollectionToXml(manager, path);
-        return new ServerResponse("Collection was saved successfully", false, false);
+        return new ServerResponse("Collection was saved successfully", false);
     }
 }

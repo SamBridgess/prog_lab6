@@ -24,9 +24,9 @@ public class RemoveFirstCommand extends Command {
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException {
         if (manager.removeRouteByIdx(0)) {
-            return new ServerResponse("First element removed succesfully", false, false);
+            return new ServerResponse("First element removed succesfully",false);
         } else {
-            return new ServerResponse("Collection is empty, no first element", false, isFile);
+            return new ServerResponse("Collection is empty, no first element",  isFile);
         }
     }
 }

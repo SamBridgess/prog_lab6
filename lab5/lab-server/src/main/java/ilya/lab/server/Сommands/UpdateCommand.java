@@ -30,9 +30,9 @@ public class UpdateCommand extends Command {
         route.setId(Long.valueOf(args[0]));
         if (manager.isElementIdPresent(Long.valueOf(args[0]))) {
             manager.updateRouteByID(Long.valueOf(args[0]), route);
-            return new ServerResponse("Updated element successfully", false, false);
+            return new ServerResponse("Updated element successfully",  false);
         } else {
-            return new ServerResponse("There is no object with such ID in the collection!", false, isFile);
+            return new ServerResponse("There is no object with such ID in the collection!",  isFile);
         }
 
 

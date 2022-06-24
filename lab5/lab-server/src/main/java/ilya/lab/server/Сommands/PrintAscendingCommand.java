@@ -32,6 +32,6 @@ public class PrintAscendingCommand extends Command {
         for (Route r : listCopy) {
             message = message + r + '\n';
         }
-        return new ServerResponse(message, false, false);
+        return new ServerResponse(message, false);
     }
 }

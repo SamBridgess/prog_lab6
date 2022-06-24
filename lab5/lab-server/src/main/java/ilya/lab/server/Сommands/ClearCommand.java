@@ -23,6 +23,6 @@ public class ClearCommand extends Command {
     public ServerResponse execute(String[] args, Route route, boolean isFile) {
         manager.clearCollection();
 
-        return new ServerResponse("Collection cleared successfully", false, false);
+        return new ServerResponse("Collection cleared successfully",  false);
     }
 }

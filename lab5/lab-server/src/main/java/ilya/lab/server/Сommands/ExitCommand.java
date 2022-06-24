@@ -23,7 +23,7 @@ public class ExitCommand extends Command {
      */
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) throws IOException {
-        return new ServerResponse("Exiting...", true, false);
+        return new ServerResponse("Exiting...",  false);
     }
 }
 

@@ -28,6 +28,6 @@ public class AddCommand extends Command {
         route.setId(manager.assignNewId());
         manager.addNewElement(route);
 
-        return new ServerResponse("Element added successfully", false, false);
+        return new ServerResponse("Element added successfully",  false);
     }
 }

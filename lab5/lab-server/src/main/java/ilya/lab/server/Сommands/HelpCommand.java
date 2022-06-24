@@ -35,7 +35,7 @@ public class HelpCommand extends Command {
                 + "filter_less_than_distance distance : вывести элементы, значение поля distance которых меньше заданного\n"
                 + "print_ascending : вывести элементы коллекции в порядке возрастания\n"
                 + "print_field_descending_distance : вывести значения поля distance всех элементов в порядке убывания";
-        return new ServerResponse(help, false, false);
+        return new ServerResponse(help, false);
     }
 
 

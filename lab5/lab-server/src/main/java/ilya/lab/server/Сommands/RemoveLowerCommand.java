@@ -29,6 +29,6 @@ public class RemoveLowerCommand extends Command {
         route.setId(manager.assignNewId());
         manager.removeAllLower(route);
 
-        return new ServerResponse("Elements removed successfully", false, false);
+        return new ServerResponse("Elements removed successfully", false);
     }
 }

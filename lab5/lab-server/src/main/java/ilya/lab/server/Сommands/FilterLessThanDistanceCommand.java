@@ -29,6 +29,6 @@ public class FilterLessThanDistanceCommand extends Command {
                 message = message + r + '\n';
             }
         }
-        return new ServerResponse(message, false, false);
+        return new ServerResponse(message,  false);
     }
 }

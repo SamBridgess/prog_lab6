@@ -23,6 +23,6 @@ public class SortCommand extends Command {
     public ServerResponse execute(String[] args, Route route, boolean isFile) {
         manager.sortCollection();
 
-        return new ServerResponse("Collection sorted successfully", false, false);
+        return new ServerResponse("Collection sorted successfully",  false);
     }
 }

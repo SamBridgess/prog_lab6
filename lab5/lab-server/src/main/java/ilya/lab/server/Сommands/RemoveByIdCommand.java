@@ -24,9 +24,9 @@ public class RemoveByIdCommand extends Command {
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException {
         if (manager.removeRouteByID(Long.parseLong(args[0]))) {
-            return new ServerResponse("Element removed successfully", false, false);
+            return new ServerResponse("Element removed successfully",  false);
         } else {
-            return new ServerResponse("There is no element with such ID in collection", false, isFile);
+            return new ServerResponse("There is no element with such ID in collection", isFile);
         }
 
 
