@@ -1,73 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Routes>
     <route>
-        <id>3</id>
-        <name>route5</name>
-        <coordinates>
-            <x>5</x>
-            <y>5</y>
-        </coordinates>
-        <creationDate>2022-06-19T16:36:52.771+03:00</creationDate>
-        <to>
-            <x>2</x>
-            <y>2</y>
-            <z>1.0</z>
-            <name>to_name</name>
-        </to>
-        <distance>1.1</distance>
-    </route>
-    <route>
-        <id>4</id>
-        <name>route5</name>
-        <coordinates>
-            <x>5</x>
-            <y>5</y>
-        </coordinates>
-        <creationDate>2022-06-19T16:50:18.921+03:00</creationDate>
-        <to>
-            <x>2</x>
-            <y>2</y>
-            <z>1.0</z>
-            <name>to_name</name>
-        </to>
-        <distance>1.1</distance>
-    </route>
-    <route>
         <id>2</id>
-        <name>route2</name>
+        <name>343</name>
         <coordinates>
-            <x>6</x>
-            <y>5</y>
+            <x>34</x>
+            <y>34</y>
         </coordinates>
-        <creationDate>2022-04-13T20:13:59.682+03:00</creationDate>
-        <from>
-            <x>65</x>
-            <y>6</y>
-            <z>56.0</z>
-            <name>56</name>
-        </from>
+        <creationDate>2022-06-24T11:54:01.214+03:00</creationDate>
         <to>
-            <x>5</x>
-            <y>65</y>
-            <z>65.0</z>
-            <name>6</name>
+            <x>34</x>
+            <y>3</y>
+            <z>4.0</z>
+            <name>334</name>
         </to>
-        <distance>20.0</distance>
-    </route>
-    <route>
-        <id>5</id>
-        <name>3</name>
-        <coordinates>
-            <x>4</x>
-            <y>4</y>
-        </coordinates>
-        <creationDate>2022-06-19T16:51:21.458+03:00</creationDate>
-        <to>
-            <x>545</x>
-            <y>45</y>
-            <z>45.0</z>
-            <name>45</name>
-        </to>
-        <distance>23.0</distance>
+        <distance>3434.0</distance>
     </route>
 </Routes>

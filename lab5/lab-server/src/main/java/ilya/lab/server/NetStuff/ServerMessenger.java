@@ -1,36 +1,47 @@
 package ilya.lab.server.NetStuff;
 
-import ilya.lab.common.Requests.ClientMessage;
-import ilya.lab.common.Requests.ServerResponse;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
+import ilya.lab.common.Requests.ClientMessage;
+import ilya.lab.common.Requests.ServerResponse;
 
 public class ServerMessenger {
-    private ServerSocket serverSocket;
-    private Socket socket;
-    private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
-    public ServerMessenger(ServerSocket serverSocket) {
+    private ServerSocketChannel serverSocket;
+    private SocketChannel socket;
+
+    public ServerMessenger(ServerSocketChannel serverSocket) {
         this.serverSocket = serverSocket;
     }
+
     public ClientMessage receive() throws IOException, ClassNotFoundException {
         socket = serverSocket.accept();
 
-        outputStream = new ObjectOutputStream(socket.getOutputStream());
-        inputStream = new ObjectInputStream(socket.getInputStream());
+        ByteBuffer buf = ByteBuffer.allocate(65536);
+        socket.read(buf);
+
+        ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(buf.array()));
 
         ClientMessage clientMessage = (ClientMessage) inputStream.readObject();
         System.out.println("Packet received!");
 
         return clientMessage;
     }
+
     public void sendResponse(ServerResponse serverResponse) throws IOException {
-        outputStream.writeObject(serverResponse);
+
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(b);
+
+        oos.writeObject(serverResponse);
+
+        socket.write(ByteBuffer.wrap(b.toByteArray()));
         System.out.println("Packet sent!");
     }
 }

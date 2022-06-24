@@ -1,33 +1,38 @@
 package ilya.lab.client.IO;
 
-import ilya.lab.common.Exceptions.CtrlDException;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Objects;
-import java.util.Stack;
+
+import ilya.lab.common.Exceptions.CtrlDException;
 
 /**
  * in-out manager
  */
 public class IOManager implements AutoCloseable {
-    private final String ansiReset = "\u001B[0m";
-    private final String ansiRed = "\u001B[31m";
-    private final String ansiGreen = "\u001B[32m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
     private BufferedReader reader;
     private PrintWriter writer;
     private boolean continueExecutionFlag;
 
-    private final Stack<File> fileStack = new Stack<>();
-    private final Stack<BufferedReader> readers = new Stack<>();
-    private final Stack<PrintWriter> writers = new Stack<>();
-    private final Stack<ArrayList<String>> executionStack = new Stack<>();
+    private final Deque<File> fileStack = new LinkedList<>();
+    private final Deque<BufferedReader> readers = new LinkedList<>();
+    private final Deque<PrintWriter> writers = new LinkedList<>();
+    private final Deque<ArrayList<String>> executionStack = new LinkedList<>();
 
     /**
      * creates new IOManager
      *
-     * @param reader    current reader
-     * @param writer    current writer
+     * @param reader current reader
+     * @param writer current writer
      */
     public IOManager(BufferedReader reader, PrintWriter writer) {
         this.reader = reader;
@@ -63,18 +68,20 @@ public class IOManager implements AutoCloseable {
         executionStack.clear();
         fileStack.clear();
     }
+
     /**
-     * @return      returns if last added script was fully executed
+     * @return returns if last added script was fully executed
      */
     public boolean isLastFileExecuted() {
-        if(executionStack.isEmpty()) {
+        if (executionStack.isEmpty()) {
             return false;
         }
         return executionStack.peek().isEmpty();
     }
 
     /**
-     * @return      returns next line from console, or from execution stack if working with file
+     * @return returns next line from console, or from execution stack if working
+     *         with file
      * @throws IOException
      * @throws CtrlDException
      */
@@ -86,13 +93,9 @@ public class IOManager implements AutoCloseable {
             }
             s = executionStack.peek().get(0);
             executionStack.peek().remove(0);
-          /*  if(isLastFileExecuted()) {
-                printConfirmation(fileStack.peek().getName() + " executed successfully");
-                popFile();
-            }*/
         } else {
             s = reader.readLine();
-            if (s == null & !getIsFile()) {
+            if (s == null && !getIsFile()) {
                 throw new CtrlDException();
             }
         }
@@ -102,8 +105,8 @@ public class IOManager implements AutoCloseable {
     /**
      * adds file to stack of opened files
      *
-     * @param file  file to add
-     * @return      returns whether file was added successfully
+     * @param file file to add
+     * @return returns whether file was added successfully
      */
     public boolean addFileToFileStack(File file) {
         if (fileStack.contains(file)) {
@@ -117,15 +120,16 @@ public class IOManager implements AutoCloseable {
      * pops fileStack and executionStack
      */
     public void popStacks() {
-        if (!executionStack.isEmpty() & !fileStack.isEmpty()) {
+        if (!executionStack.isEmpty() && !fileStack.isEmpty()) {
             executionStack.pop();
             fileStack.pop();
         }
     }
+
     /**
      * adds file to executionStack
      *
-     * @param file  File to add
+     * @param file File to add
      * @throws IOException
      */
     public void fillExecutionStack(File file) throws IOException {
@@ -149,28 +153,29 @@ public class IOManager implements AutoCloseable {
     /**
      * sets continueExecutionFlag to passed parameter
      *
-     * @param b     parameter to set ContinueExecutionFlag to
+     * @param b parameter to set ContinueExecutionFlag to
      */
     public void setContinueExecutionFlag(boolean b) {
         continueExecutionFlag = b;
     }
 
     /**
-     * @return      returns value of continueExecutionFlag
+     * @return returns value of continueExecutionFlag
      */
     public boolean getContinueExecutionFlag() {
         return continueExecutionFlag;
     }
 
-    public Stack<File> getFileStack() {
+    public Deque<File> getFileStack() {
         return fileStack;
     }
 
     /***
-     * @return      returns whether manager is working with a file in a given moment to isFile
+     * @return returns whether manager is working with a file in a given moment to
+     *         isFile
      */
     public boolean getIsFile() {
-        return !executionStack.empty();
+        return !executionStack.isEmpty();
     }
 
     /**
@@ -181,12 +186,13 @@ public class IOManager implements AutoCloseable {
     public void print(Object o) {
         writer.printf("%s", o);
     }
+
     /**
      * prints passed object with new line
      *
      * @param o object to print
      */
-    public  void println(Object o) {
+    public void println(Object o) {
         writer.println(o);
     }
 
@@ -196,7 +202,7 @@ public class IOManager implements AutoCloseable {
      * @param o object to print
      */
     public void printWarning(Object o) {
-        writer.println(ansiRed + o + ansiReset);
+        writer.println(ANSI_RED + o + ANSI_RESET);
     }
 
     /**
@@ -205,6 +211,6 @@ public class IOManager implements AutoCloseable {
      * @param o object to print
      */
     public void printConfirmation(Object o) {
-        writer.println(ansiGreen + o + ansiReset);
+        writer.println(ANSI_GREEN + o + ANSI_RESET);
     }
 }

@@ -1,13 +1,12 @@
 package ilya.lab.client.IO;
 
+import java.io.IOException;
+import java.util.Objects;
 
+import ilya.lab.client.ClientUtil.RouteValueValidator;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.InvalidValueException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
-import ilya.lab.client.ClientUtil.RouteValueValidator;
-
-import java.io.IOException;
-import java.util.Objects;
 
 /**
  * manages input of a field checking input restrictions
@@ -16,16 +15,17 @@ public class RouteFieldInputManager {
     /**
      * loops input until all field requirements are fulfilled
      *
-     * @param message                   message with input invitation
-     * @param io                        passed IOManager
-     * @param clazz                     expected input type
-     * @param validator                 contains input restrictions
+     * @param message   message with input invitation
+     * @param io        passed IOManager
+     * @param clazz     expected input type
+     * @param validator contains input restrictions
      * @param <T>
-     * @return                          returns required value
+     * @return returns required value
      * @throws WrongFileFormatException
      * @throws CtrlDException
      */
-    public <T> T validatedLoopInput(String message, IOManager io, Class<T> clazz, RouteValueValidator validator) throws WrongFileFormatException, CtrlDException {
+    public <T> T validatedLoopInput(String message, IOManager io, Class<T> clazz, RouteValueValidator validator)
+            throws WrongFileFormatException, CtrlDException {
         while (true) {
             try {
                 if (!io.getIsFile()) {
@@ -34,7 +34,7 @@ public class RouteFieldInputManager {
                 String s = io.getNextLine();
 
                 Object n;
-                if (Objects.equals(s, "") | Objects.equals(s, null)) {
+                if (Objects.equals(s, "") || Objects.equals(s, null)) {
                     n = null;
                 } else {
                     n = convertTo(s, clazz);
@@ -56,9 +56,9 @@ public class RouteFieldInputManager {
     /**
      * ask whether this collection element should be null
      *
-     * @param fieldName         name of field
-     * @param io                passed IOManager
-     * @return                  returns whether this collection element should be null
+     * @param fieldName name of field
+     * @param io        passed IOManager
+     * @return returns whether this collection element should be null
      * @throws CtrlDException
      * @throws WrongFileFormatException
      */
@@ -84,14 +84,16 @@ public class RouteFieldInputManager {
             }
         }
     }
+
     /**
      * converts string to passed type
      *
-     * @param s         string to convert
-     * @param clazz     type to convert to
+     * @param s     string to convert
+     * @param clazz type to convert to
      * @param <T>
-     * @return          returns converted object
+     * @return returns converted object
      */
+    @SuppressWarnings("unchecked")
     private <T> T convertTo(String s, Class<?> clazz) {
         T t;
         if (clazz == Integer.class) {

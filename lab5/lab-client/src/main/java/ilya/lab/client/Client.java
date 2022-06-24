@@ -1,17 +1,23 @@
 package ilya.lab.client;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.HashMap;
 
-import ilya.lab.client.ClientUtil.*;
+import ilya.lab.client.ClientUtil.CommandRules;
+import ilya.lab.client.ClientUtil.CommandSplitter;
+import ilya.lab.client.ClientUtil.LineValidator;
+import ilya.lab.client.ClientUtil.RouteCreator;
+import ilya.lab.client.ClientUtil.ScriptManager;
 import ilya.lab.client.IO.IOManager;
-import ilya.lab.common.Classes.Route;
-import ilya.lab.common.Requests.ClientMessage;
 import ilya.lab.client.NetStuff.ClientMessenger;
+import ilya.lab.common.Classes.Route;
 import ilya.lab.common.Exceptions.CtrlDException;
 import ilya.lab.common.Exceptions.WrongFileFormatException;
+import ilya.lab.common.Requests.ClientMessage;
 import ilya.lab.common.Requests.ServerResponse;
-
-import java.io.*;
-import java.util.HashMap;
 
 public final class Client {
     private Client() {
@@ -19,13 +25,14 @@ public final class Client {
     }
 
     public static void main(String[] args) {
-        try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)), new PrintWriter(System.out, true))) {
+        try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)),
+                new PrintWriter(System.out, true))) {
             HashMap<String, CommandRules> commandsInfo = createCommandsInfo();
             ClientMessenger clientMessenger = new ClientMessenger();
             ScriptManager scriptManager = new ScriptManager(io);
             while (io.getContinueExecutionFlag()) {
                 try {
-                    if(!io.getIsFile()) {
+                    if (!io.getIsFile()) {
                         io.print(">>> ");
                     }
                     String s = io.getNextLine();
@@ -33,8 +40,8 @@ public final class Client {
                     String command = commandSplitter.getCommand();
                     String[] arguments = commandSplitter.getArgs();
 
-                    if(LineValidator.checkLine(command, arguments, commandsInfo, io)) {
-                        if(command.equals("execute_script")) {
+                    if (LineValidator.checkLine(command, arguments, commandsInfo, io)) {
+                        if (command.equals("execute_script")) {
                             scriptManager.addScript(arguments[0]);
                         } else {
                             Route route = null;
@@ -42,30 +49,32 @@ public final class Client {
                                 route = new RouteCreator(io).createRoute();
                             }
 
-                            ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(), commandSplitter.getArgs(), route, io.getIsFile());
+                            ClientMessage clientMessage = new ClientMessage(commandSplitter.getCommand(),
+                                    commandSplitter.getArgs(), route, io.getIsFile());
                             ServerResponse serverResponse = clientMessenger.send(clientMessage);
                             io.println(serverResponse.getResponseMessage());
 
-                            if(serverResponse.getDisconnectClient()) {
+                            if (serverResponse.getDisconnectClient()) {
                                 io.setContinueExecutionFlag(false);
                                 io.close();
                                 return;
                             }
-                            if(serverResponse.getWrongScriptFormat()) { //todo wrong file format?
+                            if (serverResponse.getWrongScriptFormat()) { // todo wrong file format?
                                 throw new WrongFileFormatException();
                             }
-                            while(io.isLastFileExecuted()) {
+                            while (io.isLastFileExecuted()) {
                                 io.printConfirmation(io.getFileStack().peek().getName() + " executed successfully");
                                 io.popStacks();
                             }
                         }
                     } else {
                         io.printWarning("Invalid arguments");
-                        if(io.getIsFile()) {
+                        if (io.getIsFile()) {
                             throw new WrongFileFormatException();
                         }
                     }
                 } catch (CtrlDException e) {
+                    e.printStackTrace();
                     io.clearStacks();
                     io.printWarning("ctrl + D detected! Exiting program...");
                     return;
@@ -73,13 +82,14 @@ public final class Client {
                     io.clearStacks();
                     io.printWarning("Can't execute script(s) further! Wrong file(s) format");
                 } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+
                 }
             }
         } catch (IOException e) {
             System.out.println("Unexpected exception!");
         }
     }
+
     public static HashMap<String, CommandRules> createCommandsInfo() {
         HashMap<String, CommandRules> commandsInfo = new HashMap<>();
         commandsInfo.put("help", new CommandRules(0));
@@ -100,7 +110,5 @@ public final class Client {
         commandsInfo.put("print_field_descending_distance", new CommandRules(0));
         return commandsInfo;
     }
-
-
 
 }
