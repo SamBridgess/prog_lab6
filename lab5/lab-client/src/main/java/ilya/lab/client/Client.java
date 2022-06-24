@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.util.HashMap;
 
 import ilya.lab.client.ClientUtil.CommandRules;
@@ -42,6 +43,7 @@ public final class Client {
 
                     if (LineValidator.checkLine(command, arguments, commandsInfo, io)) {
                         if (command.equals("exit")) {
+                            io.printConfirmation("Exiting...");
                             return;
                         }
                         if (command.equals("execute_script")) {
@@ -71,13 +73,15 @@ public final class Client {
                         }
                     }
                 } catch (CtrlDException e) {
-                    e.printStackTrace();
                     io.clearStacks();
                     io.printWarning("ctrl + D detected! Exiting program...");
                     return;
                 } catch (WrongFileFormatException e) {
                     io.clearStacks();
                     io.printWarning("Can't execute script(s) further! Wrong file(s) format");
+                } catch (ConnectException e) {
+                    io.clearStacks();
+                    io.printWarning("Server is currently unavailable!");
                 }
             }
         } catch (IOException e) {
