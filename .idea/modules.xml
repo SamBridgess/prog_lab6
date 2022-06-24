@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/lab5/lab-client/lab-client.iml" filepath="$PROJECT_DIR$/lab5/lab-client/lab-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/lab5/lab-common/lab-common.iml" filepath="$PROJECT_DIR$/lab5/lab-common/lab-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/lab5/lab-server/lab-server.iml" filepath="$PROJECT_DIR$/lab5/lab-server/lab-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lab5/lab5.iml" filepath="$PROJECT_DIR$/lab5/lab5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lab5/lab6.iml" filepath="$PROJECT_DIR$/lab5/lab6.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/prog_lab5.iml" filepath="$PROJECT_DIR$/.idea/prog_lab5.iml" />
     </modules>
   </component>

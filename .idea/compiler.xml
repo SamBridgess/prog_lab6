@@ -15,7 +15,7 @@
       <module name="lab-client" target="8" />
       <module name="lab-common" target="8" />
       <module name="lab-server" target="8" />
-      <module name="lab5" target="8" />
+      <module name="lab6" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
