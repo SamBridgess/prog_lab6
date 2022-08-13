@@ -27,6 +27,7 @@ import ilya.common.Exceptions.CtrlDException;
 import ilya.common.Exceptions.WrongFileFormatException;
 import ilya.common.Requests.ClientMessage;
 import ilya.common.Requests.ServerResponse;
+import ilya.common.util.AddresValidator;
 import ilya.server.ServerUtil.CollectionManager;
 import ilya.server.ServerUtil.XmlParser;
 import ilya.server.Commands.AddCommand;
@@ -55,7 +56,11 @@ public final class Server {
     }
     public static void main(String[] args) throws IOException, ClassNotFoundException, CtrlDException, WrongFileFormatException, JAXBException {
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
-            final int port = 3191;
+            if (!AddresValidator.checkPort(args)) {
+                System.out.println("Please enter Port correctly!");
+                return;
+            }
+            int port = Integer.parseInt(args[0]);
             System.out.println("Server is working on port " + port);
 
             String collectionPath = "Collection.xml";

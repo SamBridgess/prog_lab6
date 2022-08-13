@@ -15,11 +15,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.HashMap;
 
+import ilya.common.util.AddresValidator;
 import ilya.client.ClientUtil.CommandRules;
 import ilya.client.ClientUtil.CommandSplitter;
 import ilya.client.ClientUtil.LineValidator;
 import ilya.client.ClientUtil.RouteCreator;
 import ilya.client.ClientUtil.ScriptManager;
+
 import ilya.client.IO.IOManager;
 import ilya.common.Classes.Route;
 import ilya.common.Exceptions.CtrlDException;
@@ -28,21 +30,22 @@ import ilya.common.Requests.ClientMessage;
 import ilya.common.Requests.ServerResponse;
 
 public final class Client {
-    private static String host = "localhost";
-    private static final int PORT = 3191;
+    private static String host;
+    private static int port;
 
     private Client() {
     }
     public static void main(String[] args) throws ClassNotFoundException {
-
         try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)), new PrintWriter(System.out, true))) {
-            if (args.length != 2) {
+            //host = "localhost";
+            //port = 3191;
+            if (!AddresValidator.checkAddress(args)) {
                 io.printWarning("Please enter Host and Port correctly!");
                 return;
-            } else {
-
-                path = args[0];
             }
+            host = args[0];
+            port = Integer.parseInt(args[1]);
+
             HashMap<String, CommandRules> commandsInfo = createCommandsInfo();
             while (io.getContinueExecutionFlag()) {
                 try {
@@ -105,7 +108,7 @@ public final class Client {
         final int timeout = 1000;
         final int bufferSize = 65536;
         Socket socket = new Socket();
-        socket.connect(new InetSocketAddress(host, PORT), timeout);
+        socket.connect(new InetSocketAddress(host, port), timeout);
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(bytes);

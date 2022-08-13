@@ -167,8 +167,8 @@
         <module name="OneStatementPerLine"/>
         <module name="ParameterAssignment"/>
         <module name="ReturnCount">
-            <property name="max" value="4"/>
-            <property name="maxForVoid" value="3"/>
+            <property name="max" value="10"/>
+            <property name="maxForVoid" value="10"/>
         </module>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
@@ -177,7 +177,7 @@
         </module>
 
         <module name="CyclomaticComplexity">
-            <property name="max" value="15"/>
+            <property name="max" value="20"/>
         </module>
 
         <!-- Checks for class design                         -->
