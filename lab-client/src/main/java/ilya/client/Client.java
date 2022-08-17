@@ -38,9 +38,9 @@ public final class Client {
     }
     public static void main(String[] args) throws ClassNotFoundException {
         try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)), new PrintWriter(System.out, true))) {
-            args = new String[2];
-            args[0] = "localhost";
-            args[1] = "5555";
+            //args = new String[2];
+            //args[0] = "localhost";
+            //args[1] = "5555";
 
             if (!AddresValidator.checkAddress(args)) {
                 io.printWarning("Please enter Host and Port correctly!");

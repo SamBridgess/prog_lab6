@@ -33,7 +33,6 @@ import ilya.server.ServerUtil.XmlParser;
 import ilya.server.Commands.AddCommand;
 import ilya.server.Commands.ClearCommand;
 import ilya.server.Commands.Command;
-import ilya.server.Commands.ExecuteScriptCommand;
 import ilya.server.Commands.ExitCommand;
 import ilya.server.Commands.FilterLessThanDistanceCommand;
 import ilya.server.Commands.HelpCommand;
@@ -56,8 +55,8 @@ public final class Server {
     }
     public static void main(String[] args) throws IOException, ClassNotFoundException, CtrlDException, WrongFileFormatException, JAXBException {
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
-            args = new String[1];
-            args[0] = "5555";
+            //args = new String[1];
+            //args[0] = "5555";
             if (!AddresValidator.checkPort(args)) {
                 System.out.println("Please enter Port correctly!");
                 return;
@@ -161,7 +160,6 @@ public final class Server {
         commands.put("remove_by_id", new RemoveByIdCommand(manager));
         commands.put("clear", new ClearCommand(manager));
         commands.put("save", new SaveCommand(manager, path));
-        commands.put("execute_script", new ExecuteScriptCommand(commands));
         commands.put("exit", new ExitCommand());
         commands.put("remove_first", new RemoveFirstCommand(manager));
         commands.put("remove_lower", new RemoveLowerCommand(manager));
