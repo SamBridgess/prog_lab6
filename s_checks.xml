@@ -160,7 +160,6 @@
         <module name="NestedForDepth">
             <property name="max" value="2"/>
         </module>
-        <module name="NestedTryDepth"/>
         <module name="NestedIfDepth">
             <property name="max" value="2"/>
         </module>

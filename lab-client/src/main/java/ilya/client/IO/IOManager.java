@@ -47,6 +47,7 @@ public class IOManager implements AutoCloseable {
      */
     @Override
     public void close() throws IOException {
+
         printConfirmation("Closing everything...");
         while (!readers.isEmpty()) {
             BufferedReader br = readers.pop();

@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 
 import ilya.common.util.AddresValidator;
@@ -37,8 +38,9 @@ public final class Client {
     }
     public static void main(String[] args) throws ClassNotFoundException {
         try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)), new PrintWriter(System.out, true))) {
-            //host = "localhost";
-            //port = 3191;
+            //args = new String[2];
+            //args[0] = "localhost";
+            //args[1] = "5555";
             if (!AddresValidator.checkAddress(args)) {
                 io.printWarning("Please enter Host and Port correctly!");
                 return;
@@ -53,6 +55,9 @@ public final class Client {
                         io.print(">>> ");
                     }
                     String s = io.getNextLine();
+                    if (s.isEmpty()) {
+                        continue;
+                    }
                     String command = CommandSplitter.getCommand(s);
                     String[] arguments = CommandSplitter.getArgs(s);
 
@@ -94,11 +99,13 @@ public final class Client {
                 } catch (WrongFileFormatException e) {
                     io.clearStacks();
                     io.printWarning("Can't execute script(s) further! Wrong file(s) format");
-                } catch (ConnectException e) {
+                } catch (ConnectException | SocketTimeoutException e) {
                     io.clearStacks();
                     io.printWarning("Server is currently unavailable!");
                 }
             }
+
+
         } catch (IOException e) {
             System.out.println("Unexpected exception!");
         }

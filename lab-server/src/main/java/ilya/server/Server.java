@@ -56,10 +56,13 @@ public final class Server {
     }
     public static void main(String[] args) throws IOException, ClassNotFoundException, CtrlDException, WrongFileFormatException, JAXBException {
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
+            //args = new String[1];
+            //args[0] = "5555";
             if (!AddresValidator.checkPort(args)) {
                 System.out.println("Please enter Port correctly!");
                 return;
             }
+
             int port = Integer.parseInt(args[0]);
             System.out.println("Server is working on port " + port);
 
