@@ -13,7 +13,6 @@ import java.util.Collections;
 public class PrintAscendingCommand extends Command {
     private final CollectionManager manager;
     public PrintAscendingCommand(CollectionManager manager) {
-
         this.manager = manager;
     }
 

@@ -5,10 +5,9 @@ import ilya.common.Classes.Route;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @XmlRootElement(name = "Routes")
 public class CollectionManager {
     @XmlElement(name = "route")
@@ -39,32 +38,6 @@ public class CollectionManager {
         return ++maxId;
     }
 
-    /**
-     * @param id    ID to check
-     * @return      returns whether element with given ID is present in collection
-     */
-    public boolean isElementIdPresent(Long id) {
-        Optional<Route> route = getRouteByID(id);
-        return route.isPresent();
-    }
-    /**
-     * updates route by ID with a newly created route
-     *
-     * @param id        id of a route to update
-     */
-    public void updateRouteByID(Long id, Route r) {
-        Optional<Route> route = getRouteByID(id);
-        route.ifPresent(value -> collection.set(collection.indexOf(value), r));
-    }
-
-    /**
-     *
-     * @param id        ID of a route to return
-     * @return          returns route with given ID or null in case there is no route with such ID
-     */
-    private Optional<Route> getRouteByID(Long id) {
-        return collection.stream().filter(route -> route.getId().equals(id)).findAny();
-    }
 
     /**
      * clears collection
@@ -89,47 +62,10 @@ public class CollectionManager {
     }
 
     /**
-     * removes route by ID
-     *
-     * @param id    ID of an element to remove
-     * @return      returns whether an element was removed successfully
-     */
-    public boolean removeRouteByID(Long id) {
-        Optional<Route> route = getRouteByID(id);
-        if (route.isPresent()) {
-            collection.remove(route.get());
-            return true;
-        } else {
-            return false;
-        }
-    }
-    /**
      * sorts collection
      */
     public void sortCollection() {
         Collections.sort(collection);
-    }
-
-
-    /**
-     * removes all objects from collection that are lower than the passed one
-     * @param route     passed object
-     */
-    public void removeAllLower(Route route) {
-        collection.removeIf(value -> new RouteComparator().isLower(value, route));
-    }
-
-    /**
-     * @return          returns a list with all distances, sorted descending
-     */
-    public ArrayList<Float> createDistanceList() {
-        ArrayList<Float> distanceList = new ArrayList<>();
-        for (Route r : collection) {
-            distanceList.add(r.getDistance());
-        }
-        Collections.sort(distanceList);
-        Collections.reverse(distanceList);
-        return distanceList;
     }
     /**
      * adds new element to collection
@@ -139,7 +75,50 @@ public class CollectionManager {
     public void addNewElement(Route route) {
         collection.add(route);
     }
+    /**
+     * removes route by ID
+     *
+     * @param id    ID of an element to remove
+     * @return      returns whether an element was removed successfully
+     */
+    public boolean removeRouteByID(Long id) {
+        return collection.removeIf(x -> x.getId() == id);
+    }
+    /**
+     * removes all objects from collection that are lower than the passed one
+     * @param route     passed object
+     */
+    public void removeAllLower(Route route) {
+        collection.removeIf(value -> new RouteComparator().isLower(value, route));
+    }
+    /**
+     * updates element in collection
+     *
+     * @param route  element to update
+     */
+    public boolean update(Route route) {
+        if (!collection.removeIf(x -> Objects.equals(x.getId(), route.getId()))) {
+            return false;
+        }
+        collection.add(route);
+        return true;
+    }
 
+    /**
+     * @return          returns a list with all distances, sorted descending
+     */
+    public List<Float> getDistanceList() {
+        List<Float> distanceList = collection.stream().map(Route::getDistance).sorted().collect(Collectors.toList());
+        Collections.reverse(distanceList);
+        return distanceList;
+    }
+
+    /**
+     * @return          returns a list with all routes with distance less than given
+     */
+    public List<Route> getLessThanDistance(float distance) {
+        return collection.stream().filter(x -> x.getDistance() < distance).collect(Collectors.toList());
+    }
 
     /**
      * @return      returns collection

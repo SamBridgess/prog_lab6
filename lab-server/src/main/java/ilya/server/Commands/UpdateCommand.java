@@ -28,13 +28,10 @@ public class UpdateCommand extends Command {
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException, CtrlDException {
         route.setId(Long.valueOf(args[0]));
-        if (manager.isElementIdPresent(Long.valueOf(args[0]))) {
-            manager.updateRouteByID(Long.valueOf(args[0]), route);
+        if(manager.update(route)) {
             return new ServerResponse("Updated element successfully",  false);
         } else {
             return new ServerResponse("There is no object with such ID in the collection!",  isFile);
         }
-
-
     }
 }

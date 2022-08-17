@@ -22,7 +22,7 @@ public class PrintFieldDescendingDistanceCommand extends Command {
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) {
         String message = "";
-        for (Float f : manager.createDistanceList()) {
+        for (Float f : manager.getDistanceList()) {
             message = message + f + '\n';
         }
         return new ServerResponse(message, false);

@@ -24,10 +24,8 @@ public class FilterLessThanDistanceCommand extends Command {
     @Override
     public ServerResponse execute(String[] args, Route route, boolean isFile) throws WrongFileFormatException {
         String message = "";
-        for (Route r : manager.getCollection()) {
-            if (r.getDistance() < Float.parseFloat(args[0])) { //todo stream api
-                message = message + r + '\n';
-            }
+        for (Route r : manager.getLessThanDistance(Float.parseFloat(args[0]))) {
+            message = message + r + '\n';
         }
         return new ServerResponse(message,  false);
     }
