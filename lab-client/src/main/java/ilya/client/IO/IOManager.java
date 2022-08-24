@@ -16,9 +16,7 @@ import ilya.common.Exceptions.CtrlDException;
  * in-out manager
  */
 public class IOManager implements AutoCloseable {
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_GREEN = "\u001B[32m";
+
     private BufferedReader reader;
     private PrintWriter writer;
     private boolean continueExecutionFlag;
@@ -47,8 +45,7 @@ public class IOManager implements AutoCloseable {
      */
     @Override
     public void close() throws IOException {
-
-        printConfirmation("Closing everything...");
+        println("Closing everything...");
         while (!readers.isEmpty()) {
             BufferedReader br = readers.pop();
             br.close();
@@ -63,7 +60,6 @@ public class IOManager implements AutoCloseable {
 
     /**
      * clears all stacks
-     *
      */
     public void clearStacks() {
         executionStack.clear();
@@ -82,7 +78,7 @@ public class IOManager implements AutoCloseable {
 
     /**
      * @return returns next line from console, or from execution stack if working
-     *         with file
+     * with file
      * @throws IOException
      * @throws CtrlDException
      */
@@ -180,7 +176,7 @@ public class IOManager implements AutoCloseable {
     }
 
     /**
-     * prints passed object without new line
+     * prints passed object
      *
      * @param o object to print
      */
@@ -197,21 +193,4 @@ public class IOManager implements AutoCloseable {
         writer.println(o);
     }
 
-    /**
-     * prints passed warning message in red
-     *
-     * @param o object to print
-     */
-    public void printWarning(Object o) {
-        writer.println(ANSI_RED + o + ANSI_RESET);
-    }
-
-    /**
-     * prints confirmation warning message in green
-     *
-     * @param o object to print
-     */
-    public void printConfirmation(Object o) {
-        writer.println(ANSI_GREEN + o + ANSI_RESET);
-    }
 }

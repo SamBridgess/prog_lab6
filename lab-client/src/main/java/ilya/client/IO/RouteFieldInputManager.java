@@ -45,7 +45,7 @@ public class RouteFieldInputManager {
                 }
                 return t;
             } catch (NumberFormatException | InvalidValueException | IOException e) {
-                io.printWarning("Invalid value!");
+                io.println("Invalid value!");
                 if (io.getIsFile()) {
                     throw new WrongFileFormatException();
                 }
@@ -77,7 +77,7 @@ public class RouteFieldInputManager {
                 }
                 throw new InvalidValueException();
             } catch (IOException | InvalidValueException e) {
-                io.printWarning("Invalid value! Must be Y or N");
+                io.println("Invalid value! Must be Y or N");
                 if (io.getIsFile()) {
                     throw new WrongFileFormatException();
                 }

@@ -38,7 +38,7 @@ public final class LineValidator {
     public static boolean checkLine(String command, String[] args, HashMap<String, CommandRules> commandsInfo, IOManager io) throws IOException, WrongFileFormatException, CtrlDException {
         if (commandsInfo.containsKey(command)) {
             if (!checkNumberOfArguments(commandsInfo.get(command).getNumberOfArgs(), args.length)) {
-                io.printWarning("Wrong number of arguments!");
+                io.println("Wrong number of arguments!");
                 return false;
             }
             try {
@@ -56,7 +56,7 @@ public final class LineValidator {
             }
             return true;
         } else {
-            io.printWarning("Command \"" + command + "\" not found!");
+            io.println("Command \"" + command + "\" not found!");
             return false;
         }
     }

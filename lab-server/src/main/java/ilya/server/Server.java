@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
 
+import java.net.BindException;
 import java.net.InetSocketAddress;
 
 import java.nio.ByteBuffer;
@@ -62,14 +63,11 @@ public final class Server {
                 return;
             }
 
-            int port = Integer.parseInt(args[0]);
-            System.out.println("Server is working on port " + port);
-
             String collectionPath = "Collection.xml";
             CollectionManager manager = XmlParser.convertXmlToCollection(collectionPath);
             HashMap<String, Command> commands = createCommandsMap(manager, collectionPath);
 
-
+            int port = Integer.parseInt(args[0]);
             inetSocketAddress = new InetSocketAddress(port);
             selector = Selector.open();
             session = new HashSet<>();
@@ -78,7 +76,7 @@ public final class Server {
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-
+            System.out.println("Server is working on port " + port);
             while (true) {
                 selector.select();
                 Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
@@ -106,7 +104,10 @@ public final class Server {
                         sendResponse(key, serverResponse);
                     }
                 }
+                XmlParser.convertCollectionToXml(manager, collectionPath);
             }
+        } catch (BindException e) {
+            System.out.println("This port is already in use, try another!");
         }
     }
     private static void accept(SelectionKey key) throws IOException {

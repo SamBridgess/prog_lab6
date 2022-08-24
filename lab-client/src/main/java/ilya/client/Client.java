@@ -43,7 +43,7 @@ public final class Client {
             //args[1] = "5555";
 
             if (!AddresValidator.checkAddress(args)) {
-                io.printWarning("Please enter Host and Port correctly!");
+                io.println("Please enter Host and Port correctly!");
                 return;
             }
             host = args[0];
@@ -64,7 +64,7 @@ public final class Client {
 
                     if (LineValidator.checkLine(command, arguments, commandsInfo, io)) {
                         if ("exit".equals(command)) {
-                            io.printConfirmation("Exiting...");
+                            io.println("Exiting...");
                             return;
                         }
                         if ("execute_script".equals(command)) {
@@ -83,26 +83,26 @@ public final class Client {
                                 throw new WrongFileFormatException();
                             }
                             while (io.isLastFileExecuted()) {
-                                io.printConfirmation(io.getFileStack().peek().getName() + " executed successfully");
+                                io.println(io.getFileStack().peek().getName() + " executed successfully");
                                 io.popStacks();
                             }
                         }
                     } else {
-                        io.printWarning("Invalid arguments");
+                        io.println("Invalid arguments");
                         if (io.getIsFile()) {
                             throw new WrongFileFormatException();
                         }
                     }
                 } catch (CtrlDException e) {
                     io.clearStacks();
-                    io.printWarning("ctrl + D detected! Exiting program...");
+                    io.println("ctrl + D detected! Exiting program...");
                     return;
                 } catch (WrongFileFormatException e) {
                     io.clearStacks();
-                    io.printWarning("Can't execute script(s) further! Wrong file(s) format");
+                    io.println("Can't execute script(s) further! Wrong file(s) format");
                 } catch (ConnectException | SocketTimeoutException e) {
                     io.clearStacks();
-                    io.printWarning("Server is currently unavailable!");
+                    io.println("Server is currently unavailable!");
                 }
             }
 
