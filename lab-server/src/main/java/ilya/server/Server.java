@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
 
 import java.net.BindException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import java.nio.ByteBuffer;
@@ -76,7 +77,7 @@ public final class Server {
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-            System.out.println("Server is working on port " + port);
+            System.out.println("Server is working on " + InetAddress.getLocalHost() + ": " + port);
             while (true) {
                 selector.select();
                 Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
