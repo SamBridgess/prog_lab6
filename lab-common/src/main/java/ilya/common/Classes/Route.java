@@ -13,6 +13,7 @@ import java.util.Objects;
 @XmlRootElement(name = "route")
 @XmlType(propOrder = {"id", "name", "coordinates", "creationDate", "from", "to", "distance"})
 public class Route implements Comparable<Route>, Serializable {
+    private static final long serialVersionUID = 123123213;
     private Long id;
     private String name;
     private Coordinates coordinates;

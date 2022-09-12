@@ -10,6 +10,8 @@ import java.util.Objects;
  */
 @XmlType(propOrder = {"x", "y"})
 public class Coordinates implements Serializable {
+    private static final long serialVersionUID = 456546456;
+
     private int x;
     private long y;
 

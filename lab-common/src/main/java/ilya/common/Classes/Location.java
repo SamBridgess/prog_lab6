@@ -10,6 +10,8 @@ import java.util.Objects;
  */
 @XmlType(propOrder = {"x", "y", "z", "name"})
 public class Location implements Serializable {
+    private static final long serialVersionUID = 879879897;
+
     private Integer x;
     private long y;
     private double z;
