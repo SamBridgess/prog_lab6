@@ -2,7 +2,12 @@ package ilya.server;
 
 
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.StreamCorruptedException;
 
 import java.net.BindException;
 import java.net.InetAddress;
@@ -74,40 +79,47 @@ public final class Server {
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
             System.out.println("Server is working on " + InetAddress.getLocalHost() + ": " + port);
+
             while (true) {
-                selector.select();
-                Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
-                while (keys.hasNext()) {
-                    SelectionKey key = keys.next();
-                    keys.remove();
-                    if (!key.isValid()) {
-                        continue;
-                    }
-                    if (key.isAcceptable()) {
-                        accept(key);
-                    } else if (key.isReadable()) {
-                        ClientMessage clientMessage = receive(key);
-                        if (clientMessage == null) {
+                try {
+                    selector.select();
+                    Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
+                    while (keys.hasNext()) {
+                        SelectionKey key = keys.next();
+                        keys.remove();
+                        if (!key.isValid()) {
                             continue;
                         }
+                        if (key.isAcceptable()) {
+                            accept(key);
+                        } else if (key.isReadable()) {
+                            ClientMessage clientMessage = receive(key);
+                            if (clientMessage == null) {
+                                continue;
+                            }
 
-                        String command = clientMessage.getCommand();
-                        String[] arguments = clientMessage.getArgs();
-                        Route route = clientMessage.getRoute();
-                        boolean isFile = clientMessage.getIsFile();
+                            String command = clientMessage.getCommand();
+                            String[] arguments = clientMessage.getArgs();
+                            Route route = clientMessage.getRoute();
+                            boolean isFile = clientMessage.getIsFile();
 
-                        ServerResponse serverResponse = commands.get(command).execute(arguments, route, isFile);
+                            ServerResponse serverResponse = commands.get(command).execute(arguments, route, isFile);
 
-                        sendResponse(key, serverResponse);
+                            sendResponse(key, serverResponse);
+                        }
                     }
+                    XmlParser.convertCollectionToXml(manager, collectionPath);
+                } catch (StreamCorruptedException e) {
+                    System.out.println("Unsupported packet received!");
+                } catch (Exception ignored) {
+                    System.out.println("Exception detected, server is still working");
                 }
-                XmlParser.convertCollectionToXml(manager, collectionPath);
             }
+
+
+
         } catch (BindException e) {
             System.out.println("This port is already in use, try another!");
-        } catch (StreamCorruptedException e) {
-            System.out.println("Unsupported packet received!");
-        } catch (Exception ignored) {
         }
     }
     private static void accept(SelectionKey key) throws IOException {

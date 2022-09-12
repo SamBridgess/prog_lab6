@@ -107,7 +107,7 @@ public final class Client {
             }
 
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Unexpected exception!");
         }
     }
