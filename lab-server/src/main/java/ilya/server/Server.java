@@ -2,11 +2,7 @@ package ilya.server;
 
 
 
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ByteArrayInputStream;
+import java.io.*;
 
 import java.net.BindException;
 import java.net.InetAddress;
@@ -109,6 +105,9 @@ public final class Server {
             }
         } catch (BindException e) {
             System.out.println("This port is already in use, try another!");
+        } catch (StreamCorruptedException e) {
+            System.out.println("Unsupported packet received!");
+        } catch (Exception ignored) {
         }
     }
     private static void accept(SelectionKey key) throws IOException {
