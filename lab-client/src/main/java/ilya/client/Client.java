@@ -40,7 +40,7 @@ public final class Client {
         try (IOManager io = new IOManager(new BufferedReader(new InputStreamReader(System.in)), new PrintWriter(System.out, true))) {
             //args = new String[2];
             //args[0] = "localhost";
-            //args[1] = "5555";
+            //args[1] = "5554";
 
             if (!AddresValidator.checkAddress(args)) {
                 io.println("Please enter Host and Port correctly!");

@@ -1,18 +1,18 @@
 package ilya.server;
 
 
-
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StreamCorruptedException;
-
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
+import java.io.ObjectInputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 
 import javax.xml.bind.JAXBException;
 
@@ -54,12 +55,13 @@ public final class Server {
     private static Selector selector;
     private static InetSocketAddress inetSocketAddress;
     private static Set<SocketChannel> session;
+    private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     private Server() {
     }
     public static void main(String[] args) throws IOException, ClassNotFoundException, CtrlDException, WrongFileFormatException, JAXBException {
         try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
             //args = new String[1];
-            //args[0] = "5555";
+            //args[0] = "5554";
             if (!AddresValidator.checkPort(args)) {
                 System.out.println("Please enter Port correctly!");
                 return;
@@ -79,10 +81,25 @@ public final class Server {
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
             System.out.println("Server is working on " + InetAddress.getLocalHost() + ": " + port);
-
             while (true) {
                 try {
-                    selector.select();
+                    if (System.in.available() > 0) {
+                        String input = in.readLine();
+                        if ("exit".equals(input)) {
+                            break;
+                        }
+                        if ("save".equals(input)) {
+                            XmlParser.convertCollectionToXml(manager, collectionPath);
+
+                            System.out.println("Collection has been saved");
+                        }
+                    }
+
+                } catch (Exception e) {
+                    System.out.println("Input error");
+                }
+                try {
+                    selector.selectNow();
                     Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
                     while (keys.hasNext()) {
                         SelectionKey key = keys.next();
@@ -108,7 +125,6 @@ public final class Server {
                             sendResponse(key, serverResponse);
                         }
                     }
-                    XmlParser.convertCollectionToXml(manager, collectionPath);
                 } catch (StreamCorruptedException e) {
                     System.out.println("Unsupported packet received!");
                 } catch (Exception ignored) {
